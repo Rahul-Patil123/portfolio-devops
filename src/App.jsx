@@ -1,12 +1,11 @@
-// src/App.js
-import React from "react";
 
 function App() {
   return (
     <div className="min-h-screen bg-gray-100 text-gray-800">
       <header className="bg-white shadow-md p-4">
         <div className="max-w-6xl mx-auto flex justify-between items-center">
-          <h1 className="text-2xl font-bold">Rahul Patil</h1>
+          <h1 className="text-9xl font-bold">Rahul Patil</h1>
+          <h1 className="text-5xl text-red-500">🚀 Tailwind is working!</h1>
           <nav className="space-x-4">
             <a href="#home" className="hover:text-blue-600 font-medium">Home</a>
             <a href="#skills" className="hover:text-blue-600 font-medium">Skills</a>
