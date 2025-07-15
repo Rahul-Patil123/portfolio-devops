@@ -1,0 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+@import "tailwindcss";
+@import "tailwindcss/utilities";
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+body {
+  font-family: 'Inter', sans-serif;
+}
+.bg-gradient {
+  background: linear-gradient(15deg, #1e1e3f, #7b2ff7, #b4163a, #FFA500, #00BFFF);
+}
+
