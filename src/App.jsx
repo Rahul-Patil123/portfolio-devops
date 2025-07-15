@@ -1,8 +1,8 @@
-import React from 'react';
 import './styles/index.css';
 import myImage from './assets/my-image.png';
 import BrandingPanel from './components/BrandingPanel';
 import ProjectsCarousel from './components/ProjectsCarousel';
+import Dock from './components/Dock';
 
 export default function App() {
   const projects = [
@@ -15,7 +15,7 @@ export default function App() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient text-black font-inter transition-colors duration-500">
+    <div className="min-h-screen bg-gradient text-black font-inter transition-colors duration-500 relative pb-24">
       <div className="p-4 md:p-6 mx-auto">
         <div className="flex flex-col md:flex-row min-h-[90vh] gap-6 md:gap-10">
           <BrandingPanel image={myImage} />
@@ -23,12 +23,10 @@ export default function App() {
             <section className="mb-12">
               <ProjectsCarousel projects={projects} />
             </section>
-            <footer className="text-center text-sm text-white/70 mt-8">
-              Made with ❤️ by Me — 2025
-            </footer>
           </main>
         </div>
       </div>
+      <Dock />
     </div>
   );
 }

@@ -14,4 +14,18 @@ body {
 .bg-gradient {
   background: linear-gradient(15deg, #1e1e3f, #7b2ff7, #b4163a, #FFA500, #00BFFF);
 }
+.show-cursor::after {
+  content: '';
+  display: inline-block;
+  width: 1.5px;
+  height: 1.3em;
+  background-color: black;
+  animation: blink 1s steps(2, start) infinite;
+  margin-left: 2px;
+  vertical-align: middle;
+}
 
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
