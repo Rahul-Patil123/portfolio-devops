@@ -12,8 +12,9 @@ body {
   font-family: 'Inter', sans-serif;
 }
 .bg-gradient {
-  background: linear-gradient(15deg, #1e1e3f, #7b2ff7, #b4163a, #FFA500, #00BFFF);
+background: linear-gradient(to top left, #000000, #000000);
 }
+
 .show-cursor::after {
   content: '';
   display: inline-block;
@@ -28,4 +29,4 @@ body {
 @keyframes blink {
   0%, 100% { opacity: 1; }
   50% { opacity: 0; }
-}
+} 
