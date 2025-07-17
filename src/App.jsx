@@ -4,10 +4,11 @@ import ProjectsCarousel from './components/ProjectsCarousel';
 import Dock from './components/Dock';
 import StarCanvas from './components/StarIntro';
 import myImage from './assets/my-image.png';
-import backgroundImage from './assets/background.png';
 import './styles/index.css';
 import SkyCanvas from './components/SkyCanvas';
+import { fetchFilteredRepos } from "./utils/githubAPI";
 export default function App() {
+  const [projects, setProjects] = useState([]);
   const brandingRef = useRef();
   const [stage, setStage] = useState(0); // 0 = intro, 1 = image, 2 = branding, 3 = full
 
@@ -19,15 +20,21 @@ export default function App() {
     }
   }, [stage]);
 
-  const projects = [
-    { title: 'Project 1', description: 'Cool stuff here' },
-    { title: 'Project 2', description: 'More cool stuff' },
-    { title: 'Project 3', description: 'Yet another one' },
-    { title: 'Project 4', description: 'Impressive work' },
-    { title: 'Project 5', description: 'Clean and elegant' },
-    { title: 'Project 6', description: 'Sleek functionality' },
-  ];
-
+  // const projects = [
+  //   { title: 'Project 1', description: 'Cool stuff here' },
+  //   { title: 'Project 2', description: 'More cool stuff' },
+  //   { title: 'Project 3', description: 'Yet another one' },
+  //   { title: 'Project 4', description: 'Impressive work' },
+  //   { title: 'Project 5', description: 'Clean and elegant' },
+  //   { title: 'Project 6', description: 'Sleek functionality' },
+  // ];
+  useEffect(() => {
+    async function loadProjects() {
+      const repos = await fetchFilteredRepos();
+      setProjects(repos);
+    }
+    loadProjects();
+  }, []);
   return (
     <div
       className="min-h-screen text-white font-inter transition-all duration-700 relative"

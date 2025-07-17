@@ -1,6 +1,5 @@
-import React, { useRef, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 import ProjectCard from './ProjectCard';
-
 export default function ProjectsCarousel({ projects }) {
   const scrollRef = useRef(null);
   const animationRef = useRef(null);
@@ -17,12 +16,20 @@ export default function ProjectsCarousel({ projects }) {
   };
 
   const stopScroll = () => cancelAnimationFrame(animationRef.current);
-  const startScroll = () => (animationRef.current = requestAnimationFrame(scroll));
+  const startScroll = () => {
+    if (projects.length >= 3) {
+      animationRef.current = requestAnimationFrame(scroll);
+    }
+  };
 
   useEffect(() => {
     startScroll();
     return () => stopScroll();
-  }, []);
+  }, [projects]);
+
+  const renderProjects = projects.length >= 3
+    ? [...projects, ...projects] // double it for smooth scroll
+    : projects;
 
   return (
     <div
@@ -36,8 +43,14 @@ export default function ProjectsCarousel({ projects }) {
         aria-label="Project showcase scrolling carousel"
       >
         <div className="w-8 shrink-0" />
-        {[...projects, ...projects].map((project, index) => (
-          <ProjectCard key={index} title={project.title} description={project.description} />
+        {renderProjects.map((project, index) => (
+          <ProjectCard
+            key={`${project.url}-${index}`} // safer key
+            title={project.title}
+            description={project.description}
+            url={project.url}
+            image={project.image}
+          />
         ))}
       </div>
     </div>
