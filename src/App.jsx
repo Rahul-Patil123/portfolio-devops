@@ -2,11 +2,11 @@ import { useRef, useState, useEffect } from 'react';
 import BrandingPanel from './components/BrandingPanel';
 import ProjectsCarousel from './components/ProjectsCarousel';
 import Dock from './components/Dock';
-import StarIntro from './components/StarIntro';
+import StarCanvas from './components/StarIntro';
 import myImage from './assets/my-image.png';
-import backgroundImage from './assets/background.png'; // ✅ Background image
+import backgroundImage from './assets/background.png';
 import './styles/index.css';
-
+import SkyCanvas from './components/SkyCanvas';
 export default function App() {
   const brandingRef = useRef();
   const [stage, setStage] = useState(0); // 0 = intro, 1 = image, 2 = branding, 3 = full
@@ -32,28 +32,24 @@ export default function App() {
     <div
       className="min-h-screen text-white font-inter transition-all duration-700 relative"
       style={{
-        backgroundImage: `url(${backgroundImage})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
+        backgroundColor: 'black',
       }}
     >
       <div className="absolute inset-0 bg-black opacity-70 z-0" />
-
-      {/* 🌠 Star Animation Layer */}
+      <SkyCanvas />
       {stage === 0 && (
-        <StarIntro brandingRef={brandingRef} onImpact={() => setStage(1)} />
+        <StarCanvas onImpact={() => setStage(1)} brandingRef={brandingRef} />
       )}
 
       {/* Main Layout Content */}
       <div
-        className={`relative z-10 transition-all duration-700 ease-out ${
-          stage > 0 ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
-        }`}
+        className={`relative z-10 transition-all duration-700 ease-out ${stage > 0 ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+          }`}
       >
         <div className="p-4 md:p-5 mx-auto pb-28">
           <div className="flex flex-col md:flex-row min-h-[90vh] gap-6 md:gap-10">
-            <BrandingPanel ref={brandingRef} image={myImage} />
+            <BrandingPanel ref={brandingRef} image={myImage} stage={stage} />
+
 
             {/* Projects appear only at stage 3 */}
             {stage >= 3 && (
@@ -69,9 +65,8 @@ export default function App() {
 
       {/* Dock appears at stage 3 */}
       <div
-        className={`fixed bottom-0 left-0 w-full z-40 transition-opacity duration-700 ${
-          stage >= 3 ? 'opacity-100' : 'opacity-0'
-        }`}
+        className={`fixed bottom-0 left-0 w-full z-40 transition-opacity duration-700 ${stage >= 3 ? 'opacity-100' : 'opacity-0'
+          }`}
       >
         <Dock />
       </div>

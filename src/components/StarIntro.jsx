@@ -1,98 +1,212 @@
-import { useEffect } from 'react';
-import { motion, useAnimation } from 'framer-motion';
-import cometImg from '../assets/comet.png';
+import { useEffect, useRef } from 'react';
 
-const getRandomX = () => Math.random() * window.innerWidth;
-const getRandomY = () => Math.random() * window.innerHeight;
-const getRandomDir = () => (Math.random() < 0.5 ? 'top-down' : 'diagonal-right');
+export default function StarIntroCanvas({ onImpact, brandingRef }) {
+    const canvasRef = useRef();
 
-export default function StarIntro({ onImpact, brandingRef }) {
-  const heroControls = useAnimation();
+    useEffect(() => {
+        const canvas = canvasRef.current;
+        const ctx = canvas.getContext('2d');
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (!brandingRef.current) return;
+        let width = (canvas.width = window.innerWidth);
+        let height = (canvas.height = window.innerHeight);
+        let isMobile = width < 768;
 
-      const rect = brandingRef.current.getBoundingClientRect();
-      const scrollX = window.pageXOffset || document.documentElement.scrollLeft;
-      const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+        let comets = [];
+        let heroComet = null;
+        let animationFrameId;
+        let startTime = performance.now();
 
-      const finalX = rect.left + scrollX + rect.width / 2 - 60;
-      const finalY = rect.top + scrollY + rect.height / 2 - 60;
+        const MAX_COMETS = isMobile ? 50 : 120;
 
-      heroControls.start({
-        left: finalX,
-        top: finalY,
-        opacity: 1,
-        scale: [1, 5, 10],
-        transition: { duration: 1.9, ease: 'easeIn'},
-      });
+        // --- Spawner ---
+        function spawnComet() {
+            if (comets.length >= MAX_COMETS) return;
 
-      setTimeout(() => {
-        onImpact?.();
-      }, 1700);
-    }, 500);
+            const size = Math.random() * 1.2 + 1;
+            const trailLength = 70 + Math.random() * 50;
 
-    return () => clearTimeout(timer);
-  }, []);
+            // 🎯 Choose a spawn region
+            const region = Math.random();
+            let startX, startY;
 
-  return (
-    <motion.div className="fixed inset-0 z-50 bg-black overflow-hidden">
-      {[...Array(120)].map((_, i) => {
-        const delay = Math.random() * 2;
-        const dir = getRandomDir();
-        const isBig = Math.random() < 0.62;
-        const size = isBig ? Math.floor(Math.random() * 2000 + 300) : Math.floor(Math.random() * 280 + 32);
-        const x = getRandomX();
-        const y = getRandomY();
+            if (region < 0.7) {
+                // Top-right: off-screen
+                startX = width + Math.random() * 200;
+                startY = -100 - Math.random() * height * 0.5;
+            } else {
+                // Near hero star / top-center
+                startX = width * 0.3 + Math.random() * width * 0.4; // From 30% to 70% of screen width
+                startY = -100 - Math.random() * 200;
+            }
 
-        let initial = {}, animate = {}, style = {};
+            const angle = (135 * Math.PI) / 180;
+            const speed = 2 + Math.random() * 1.5;
 
-        if (dir === 'top-down') {
-          initial = { x, y: -150, opacity: 0 };
-          animate = { x, y: window.innerHeight + 150, opacity: [0, 1, 0] };
-        } else if (dir === 'diagonal-right') {
-          // From top-right to bottom-left
-          initial = { x: window.innerWidth + 150, y: -150, opacity: 0 };
-          animate = { x: -150, y: window.innerHeight + 150, opacity: [0, 1, 0] };
+            const vx = Math.cos(angle) * speed;
+            const vy = Math.sin(angle) * speed;
+
+            // Calculate travel distance to set lifespan
+            const endX = -200;
+            const endY = height + 200;
+            const dx = endX - startX;
+            const dy = endY - startY;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            const lifespan = distance / speed;
+
+            comets.push({
+                x: startX,
+                y: startY,
+                vx,
+                vy,
+                size,
+                length: trailLength,
+                opacity: 1,
+                life: 0,
+                maxLife: lifespan,
+            });
         }
 
-        style = {
-          width: size,
-          height: size,
-          filter: isBig ? 'blur(10px) brightness(8)' : 'brightness(7)',
+
+
+        // --- Hero Comet ---
+        function launchHero() {
+            const imageEl = brandingRef.current?.querySelector('img');
+            const rect = imageEl?.getBoundingClientRect();
+
+            if (!rect) return;
+
+            const finalX = rect.left + rect.width / 2;
+            const finalY = rect.top + rect.height / 2;
+
+            heroComet = {
+                x: width / 2,
+                y: -100,
+                vx: (finalX - width / 2) / 100,
+                vy: (finalY + 100) / 100,
+                trail: [],
+                age: 0,
+                arrived: false,
+            };
+        }
+
+        // --- Comet Drawing ---
+        function drawComet(comet) {
+            const { x, y, vx, vy, length, opacity, size } = comet;
+
+            const gradient = ctx.createLinearGradient(x, y, x - vx * length, y - vy * length);
+            gradient.addColorStop(0, `rgba(255, 255, 255, ${opacity})`);
+            gradient.addColorStop(1, `rgba(255, 255, 255, 0)`);
+
+            ctx.beginPath();
+            ctx.strokeStyle = gradient;
+            ctx.lineWidth = size;
+            ctx.moveTo(x, y);
+            ctx.lineTo(x - vx * length, y - vy * length);
+            ctx.stroke();
+        }
+
+        // --- Hero Trail + Star Head ---
+        function drawStar(ctx, cx, cy, spikes, outerRadius, innerRadius) {
+            let rot = Math.PI / 2 * 3;
+            let step = Math.PI / spikes;
+            ctx.beginPath();
+            ctx.moveTo(cx, cy - outerRadius);
+            for (let i = 0; i < spikes; i++) {
+                ctx.lineTo(cx + Math.cos(rot) * outerRadius, cy + Math.sin(rot) * outerRadius);
+                rot += step;
+                ctx.lineTo(cx + Math.cos(rot) * innerRadius, cy + Math.sin(rot) * innerRadius);
+                rot += step;
+            }
+            ctx.lineTo(cx, cy - outerRadius);
+            ctx.closePath();
+            ctx.fillStyle = 'white';
+            ctx.shadowBlur = 20;
+            ctx.shadowColor = 'white';
+            ctx.fill();
+        }
+
+        function drawHeroComet(hc) {
+            hc.trail.push({ x: hc.x, y: hc.y });
+            if (hc.trail.length > 50) hc.trail.shift();
+
+            // Trail
+            for (let i = 0; i < hc.trail.length - 1; i++) {
+                const p1 = hc.trail[i];
+                const p2 = hc.trail[i + 1];
+                ctx.beginPath();
+                ctx.strokeStyle = `rgba(255,255,255,${i / hc.trail.length})`;
+                ctx.lineWidth = 3;
+                ctx.moveTo(p1.x, p1.y);
+                ctx.lineTo(p2.x, p2.y);
+                ctx.stroke();
+            }
+
+            // Star head
+            drawStar(ctx, hc.x, hc.y, 5, 10, 4);
+        }
+
+        // --- Animation ---
+        function draw() {
+            ctx.clearRect(0, 0, width, height);
+
+            comets.forEach((comet, i) => {
+                comet.x += comet.vx;
+                comet.y += comet.vy;
+                comet.life++;
+                comet.opacity = 1 - comet.life / comet.maxLife;
+
+                drawComet(comet);
+                if (comet.life > comet.maxLife) {
+                    comets.splice(i, 1);
+                }
+            });
+
+            if (heroComet) {
+                heroComet.x += heroComet.vx;
+                heroComet.y += heroComet.vy;
+                heroComet.age++;
+
+                drawHeroComet(heroComet);
+
+                if (!heroComet.arrived && heroComet.age > 100) {
+                    heroComet.arrived = true;
+                    setTimeout(() => onImpact?.(), 200);
+                }
+            }
+
+            animationFrameId = requestAnimationFrame(draw);
+        }
+
+        // --- Setup ---
+        const spawnInterval = setInterval(() => {
+            if (performance.now() - startTime < 4000) spawnComet();
+        }, 80);
+
+        setTimeout(() => {
+            launchHero();
+        }, 4200);
+
+        const resize = () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            isMobile = width < 768;
         };
 
-        return (
-          <motion.img
-            key={i}
-            src={cometImg}
-            alt="comet"
-            className="absolute pointer-events-none drop-shadow-[0_0_40px_white]"
-            initial={initial}
-            animate={animate}
-            transition={{ duration: 3.5, delay }}
-            style={style}
-          />
-        );
-      })}
+        window.addEventListener('resize', resize);
+        draw();
 
-      {/* Hero Star */}
-      <motion.img
-        src={cometImg}
-        alt="Hero comet"
-        initial={{
-          position: 'fixed',
-          left: '50%',
-          top: '-120px',
-          opacity: 0,
-          width: '120px',
-          height: '120px',
-          filter: 'brightness(10)',
-        }}
-        animate={heroControls}
-        className="absolute drop-shadow-[0_0_60px_white]"
-      />
-    </motion.div>
-  );
+        return () => {
+            cancelAnimationFrame(animationFrameId);
+            clearInterval(spawnInterval);
+            window.removeEventListener('resize', resize);
+        };
+    }, []);
+
+    return (
+        <canvas
+            ref={canvasRef}
+            className="fixed inset-0 z-50 pointer-events-none"
+            style={{ width: '100%', height: '100%' }}
+        />
+    );
 }

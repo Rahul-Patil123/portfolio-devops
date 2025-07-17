@@ -21,7 +21,7 @@ export default function Dock() {
       {/* Dock container */}
       <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50">
         {/* Background bar */}
-        <div className="flex items-end gap-4 px-6 py-3 bg-white/30 shadow-xl rounded-3xl backdrop-blur-md max-w-[95vw] mx-auto overflow-x-auto">
+        <div className="flex items-end gap-4 px-6 py-3 bg-white/30 shadow-xl rounded-3xl backdrop-blur-xs max-w-[95vw] mx-auto overflow-x-auto">
           {technologies.map((tech, i) => (
             <DockItem key={i} name={tech.name} icon={tech.icon} />
           ))}
