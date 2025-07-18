@@ -33,8 +33,6 @@ export async function fetchFilteredRepos() {
     );
     return descMatch || topicMatch;
   });
-
-  // Enhance each repo with image (from README)
   const enrichedRepos = await Promise.all(
     filteredRepos.map(async (repo) => {
       const image = await fetchReadmeImage(repo.name);
