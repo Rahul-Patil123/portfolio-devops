@@ -26,4 +26,4 @@ jobs:
       with:
         context: .
         push: true
-        tags: ${{ secrets.DOCKER_USERNAME }}/portfolio-site:1.0
+        tags: ${{ secrets.DOCKER_USERNAME }}/portfolio-site:latest
