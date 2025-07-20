@@ -40,7 +40,7 @@ export async function fetchFilteredRepos() {
         title: repo.name,
         description: repo.description || "No description",
         url: repo.html_url,
-        image, // can be null
+        image,
       };
     })
   );

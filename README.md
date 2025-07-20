@@ -6,17 +6,17 @@
 
 ## 🧠 Table of Contents
 
-1. [About the Project](#about-the-project)
-2. [Tech Stack](#tech-stack)
-3. [Features](#features)
-4. [Folder Structure](#folder-structure)
-5. [CI/CD Pipeline](#cicd-pipeline)
-6. [Jenkins Alternative ](#jenkins-alternative)
-7. [Setup & Run Locally](#setup--run-locally)
-8. [Dockerhub Deployment](#dockerhub-deployment)
-9. [Screenshots](#screenshots)
-10. [Security Considerations](#security-considerations)
-11. [License](#license)
+1. [About the Project](#-about-the-project)
+2. [Tech Stack](#-tech-stack)
+3. [Features](#-features)
+4. [Folder Structure](#-folder-structure)
+5. [CI/CD Pipeline](#-cicd-pipeline)
+6. [Jenkins Alternative ](#-jenkins-alternative)
+7. [Setup & Run Locally](#-setup--run-locally)
+8. [Dockerhub Deployment](#-dockerhub-deployment)
+9. [Screenshots](#-screenshots)
+10. [Security Considerations](#-security-considerations)
+11. [License](#-license)
 
 ---
 
@@ -164,10 +164,10 @@ npm run dev
 ## 🖼️ Screenshots
 
 ```md
-![StartingAnimation](image-1.png)
-![LandingPage](image.png)
-![DockerHub](image-2.png)
-![DockerHub-Tag-1.0](image-3.png)
+![StartingAnimation](/public/image-1.png)
+![LandingPage](/public/image.png)
+![DockerHub](/public/image-2.png)
+![DockerHub-Tag-1.0](/public/image-3.png)
 ```
 ---
 
@@ -187,6 +187,7 @@ npm run dev
   .vscode
   .DS_Store
   .env.local
+  .github/
   ```
 * On Jenkins, we can use `Credentials Manager` to securely inject DockerHub credentials.
 
