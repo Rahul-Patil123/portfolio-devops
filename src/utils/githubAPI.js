@@ -1,7 +1,5 @@
 const GITHUB_USERNAME = "Rahul-Patil123";
 const GITHUB_TOPICS = ["portfolio", "devops"];
-
-// Helper: Fetch image from README (first image markdown)
 async function fetchReadmeImage(repoName) {
   try {
     const res = await fetch(`https://api.github.com/repos/${GITHUB_USERNAME}/${repoName}/readme`, {

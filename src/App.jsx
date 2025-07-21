@@ -20,14 +20,6 @@ export default function App() {
     }
   }, [stage]);
 
-  // const projects = [
-  //   { title: 'Project 1', description: 'Cool stuff here' },
-  //   { title: 'Project 2', description: 'More cool stuff' },
-  //   { title: 'Project 3', description: 'Yet another one' },
-  //   { title: 'Project 4', description: 'Impressive work' },
-  //   { title: 'Project 5', description: 'Clean and elegant' },
-  //   { title: 'Project 6', description: 'Sleek functionality' },
-  // ];
   useEffect(() => {
     async function loadProjects() {
       const repos = await fetchFilteredRepos();

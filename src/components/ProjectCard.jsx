@@ -1,16 +1,13 @@
-export default function ProjectCard({ title, description, url, image }) {
+export default function ProjectCard({ title, image, onClick }) {
   return (
-    <a
-      href={url}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="bg-[#0e0e0e] rounded-2xl shadow-lg hover:scale-[0.9] transition-transform duration-300 w-64 p-4 flex-shrink-0 border border-white/10"
+    <div
+      onClick={onClick}
+      className="bg-[#0e0e0e] rounded-2xl shadow-lg hover:scale-[0.9] transition-transform duration-300 w-64 p-4 flex-shrink-0 border border-white/10 cursor-pointer"
     >
       {image ? (
         <img
           src={image}
           alt={`${title} preview`}
-          loading="lazy" // ✅ lazy load
           className="w-full h-36 object-cover rounded-lg mb-3"
         />
       ) : (
@@ -19,7 +16,6 @@ export default function ProjectCard({ title, description, url, image }) {
         </div>
       )}
       <h3 className="text-white font-semibold text-lg">{title}</h3>
-      <p className="text-white/60 text-sm">{description}</p>
-    </a>
+    </div>
   );
 }

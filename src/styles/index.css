@@ -20,7 +20,7 @@ background: linear-gradient(to top left, #000000, #000000);
   display: inline-block;
   width: 1.5px;
   height: 1.3em;
-  background-color: black;
+  background-color: white;
   animation: blink 1s steps(2, start) infinite;
   margin-left: 2px;
   vertical-align: middle;
@@ -29,4 +29,36 @@ background: linear-gradient(to top left, #000000, #000000);
 @keyframes blink {
   0%, 100% { opacity: 1; }
   50% { opacity: 0; }
-} 
+}
+* {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+*::-webkit-scrollbar {
+  display: none;
+}
+.outline-text {
+  color: transparent;
+  -webkit-text-stroke: 1px white;
+  -webkit-text-fill-color: transparent;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+}
+.solid-text {
+  color: white;
+  z-index: 0;
+  text-shadow: 0 0 20px rgba(0, 0, 0, 0.9);
+}
+@keyframes tooltip-bounce {
+  0%, 100% {
+    transform: translateY(0) translateX(-0%);
+  }
+  50% {
+    transform: translateY(-5px) translateX(-2%);
+  }
+}
+.animate-tooltip-bounce {
+  animation: tooltip-bounce 0.6s ease-in-out infinite;
+}

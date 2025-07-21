@@ -42,33 +42,39 @@ export default function Dock() {
   return (
     <>
       <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50">
-        <div
-          ref={dockRef}
-          className="flex items-end gap-3 px-4 py-2 bg-white/30 shadow-xl rounded-3xl backdrop-blur-xs max-w-[95vw] mx-auto"
-        >
-          {technologies.map((tech, i) => (
-            <DockItem
-              key={i}
-              name={tech.name}
-              icon={tech.icon}
-              mouseX={mouseX}
-              dockRef={dockRef}
-            />
-          ))}
+  <div
+    className="flex items-end px-4 py-2 bg-white/30 shadow-xl rounded-3xl backdrop-blur-xs
+               max-w-[95vw] mx-auto"
+  >
+    {/* Scrollable Tech Icons */}
+    <div
+      ref={dockRef}
+      className="flex items-end gap-3 overflow-x-auto sm:overflow-x-visible scrollbar-hide snap-x snap-mandatory"
+    >
+      {technologies.map((tech, i) => (
+        <DockItem
+          key={i}
+          name={tech.name}
+          icon={tech.icon}
+          mouseX={mouseX}
+          dockRef={dockRef}
+        />
+      ))}
+    </div>
 
-          {/* 🔹 Vertical Divider */}
-          <div className="w-1/180 h-11 bg-black/50 mx-1"></div>
+    {/* Fixed Divider */}
+    <div className="w-[1.5px] h-10 bg-black/40 mx-3"></div>
 
-          {/* Contact Item */}
-          <DockItem
-            name="Contact Me"
-            icon={phoneIcon}
-            onClick={() => setShowModal(true)}
-            mouseX={mouseX}
-            dockRef={dockRef}
-          />
-        </div>
-      </div>
+    {/* Fixed Contact Button */}
+    <DockItem
+      name="Contact Me"
+      icon={phoneIcon}
+      onClick={() => setShowModal(true)}
+      mouseX={mouseX}
+      dockRef={dockRef}
+    />
+  </div>
+</div>
 
       <ContactModal isOpen={showModal} onClose={() => setShowModal(false)} />
     </>

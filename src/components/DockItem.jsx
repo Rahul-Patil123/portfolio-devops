@@ -49,13 +49,16 @@ export default function DockItem({ name, icon, onClick, mouseX, dockRef }) {
         marginRight: `${transformStyle.marginInline}px`,
         transition: 'transform 0.2s ease, margin 0.2s ease',
       }}
-      className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center"
+      className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center flex-shrink-0 min-w-10 sm:min-w-12"
+
     >
-      <img
-        src={icon}
-        alt={name}
-        className="w-full h-full object-contain pointer-events-none"
-      />
+      <div className="snap-center">
+        <img
+          src={icon}
+          alt={name}
+          className="w-full h-full object-contain pointer-events-none"
+        />
+      </div>
     </button>
   );
 }
