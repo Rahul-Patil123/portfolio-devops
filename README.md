@@ -164,11 +164,11 @@ npm run dev
 ## 🖼️ Screenshots
 
 ```md
-![Preview](/preview.png)
-![StartingAnimation](/image-1.png)
-![LandingPage](/image.png)
-![DockerHub](/image-2.png)
-![DockerHub-Tag-1.0](/image-3.png)
+![Preview](/public/preview.png)
+![StartingAnimation](/public/image-1.png)
+![LandingPage](/public/image.png)
+![DockerHub](/public/image-2.png)
+![DockerHub-Tag-1.0](/public/image-3.png)
 ```
 ---
 
