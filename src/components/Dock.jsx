@@ -1,18 +1,27 @@
+import { useState, useRef, useEffect } from 'react';
 import DockItem from './DockItem';
 import ContactModal from './ContactModal';
-import reactIcon from '../assets/icons/react.svg';
-import nodeIcon from '../assets/icons/nodedotjs.svg';
-import jsIcon from '../assets/icons/javascript.svg';
+
+import awsIcon from '../assets/icons/Aws.svg';
+import dockerIcon from '../assets/icons/Docker.svg';
+import gitIcon from '../assets/icons/Git.svg';
+import githubIcon from '../assets/icons/Github-Circle.svg';
+import jenkinsIcon from '../assets/icons/Jenkins.svg';
+import k8sIcon from '../assets/icons/Kubernetes.svg';
+import terraformIcon from '../assets/icons/Terraform.svg';
 import phoneIcon from '../assets/icons/icons8-phone.svg';
-import { useState, useRef, useEffect } from 'react';
 
 const technologies = [
-  { name: 'React', icon: reactIcon },
-  { name: 'Node.js', icon: nodeIcon },
-  { name: 'JavaScript', icon: jsIcon },
+  { name: 'AWS', icon: awsIcon },
+  { name: 'Docker', icon: dockerIcon },
+  { name: 'Git', icon: gitIcon },
+  { name: 'GitHub', icon: githubIcon },
+  { name: 'Jenkins', icon: jenkinsIcon },
+  { name: 'Kubernetes', icon: k8sIcon },
+  { name: 'Terraform', icon: terraformIcon },
 ];
 
-export default function Dock() {
+export default function Dock({ setSelectedSkill }) {
   const [showModal, setShowModal] = useState(false);
   const [mouseX, setMouseX] = useState(null);
   const dockRef = useRef(null);
@@ -20,10 +29,8 @@ export default function Dock() {
   useEffect(() => {
     const handleMouseMove = (e) => {
       if (!dockRef.current) return;
-
       const rect = dockRef.current.getBoundingClientRect();
       const x = e.clientX - rect.left;
-
       setMouseX(x);
     };
 
@@ -42,40 +49,34 @@ export default function Dock() {
   return (
     <>
       <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50">
-  <div
-    className="flex items-end px-4 py-2 bg-white/30 shadow-xl rounded-3xl backdrop-blur-xs
-               max-w-[95vw] mx-auto"
-  >
-    {/* Scrollable Tech Icons */}
-    <div
-      ref={dockRef}
-      className="flex items-end gap-3 overflow-x-auto sm:overflow-x-visible scrollbar-hide snap-x snap-mandatory"
-    >
-      {technologies.map((tech, i) => (
-        <DockItem
-          key={i}
-          name={tech.name}
-          icon={tech.icon}
-          mouseX={mouseX}
-          dockRef={dockRef}
-        />
-      ))}
-    </div>
-
-    {/* Fixed Divider */}
-    <div className="w-[1.5px] h-10 bg-black/40 mx-3"></div>
-
-    {/* Fixed Contact Button */}
-    <DockItem
-      name="Contact Me"
-      icon={phoneIcon}
-      onClick={() => setShowModal(true)}
-      mouseX={mouseX}
-      dockRef={dockRef}
-    />
-  </div>
-</div>
-
+        <div className="flex items-end px-4 py-2 bg-white/30 shadow-xl rounded-3xl backdrop-blur-xs max-w-[95vw] mx-auto">
+          <div
+            ref={dockRef}
+            className="flex items-end gap-3 overflow-x-auto sm:overflow-visible scrollbar-hide snap-x snap-mandatory max-w-[75vw] relative"
+          >
+            {technologies.map((tech, i) => (
+              <DockItem
+                key={i}
+                name={tech.name}
+                icon={tech.icon}
+                mouseX={mouseX}
+                dockRef={dockRef}
+                onClick={() => setSelectedSkill(tech.name)} // ✅ call prop
+              />
+            ))}
+          </div>
+          <div className="flex items-center pl-4">
+            <div className="w-[1.5px] h-10 bg-black/40 mx-3"></div>
+            <DockItem
+              name="Contact Me"
+              icon={phoneIcon}
+              onClick={() => setShowModal(true)}
+              mouseX={mouseX}
+              dockRef={dockRef}
+            />
+          </div>
+        </div>
+      </div>
       <ContactModal isOpen={showModal} onClose={() => setShowModal(false)} />
     </>
   );
