@@ -32,7 +32,7 @@ const techDetails = {
   Jenkins: {
     icon: jenkinsIcon,
     description:
-      'I’ve configured Jenkins pipelines for build/test/deploy stages. Familiar with plugins and shared libraries.',
+      'I’ve configured Jenkins pipelines for build/test/deploy stages   . Familiar with plugins and shared libraries.',
   },
   Kubernetes: {
     icon: k8sIcon,
