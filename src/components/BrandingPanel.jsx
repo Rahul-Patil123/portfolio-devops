@@ -53,7 +53,7 @@ const BrandingPanel = forwardRef(function BrandingPanel({ image, stage }, ref) {
   return (
     <aside
       ref={ref}
-      className="md:w-[30%] bg-white/20 rounded-3xl backdrop-blur-xs p-6 sm:p-8 md:p-10 flex flex-col items-center justify-center text-center shadow-[0_0_50px_rgba(255,255,255,0.12)] min-h-[440px]"
+      className="md:w-full md:h-full bg-white/20 rounded-3xl backdrop-blur-xs p-6 sm:p-8 md:p-10 flex flex-col items-center justify-center text-center shadow-[0_0_50px_rgba(255,255,255,0.12)] min-h-[440px]"
     >
       <div className="relative mb-6 flex flex-col items-center group">
 
@@ -86,7 +86,7 @@ const BrandingPanel = forwardRef(function BrandingPanel({ image, stage }, ref) {
         <motion.h2
           initial={{ opacity: 0, y: 50 }}
           animate={nameVisible ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 1, ease: 'easeOut', delay: 0.05}}
+          transition={{ duration: 1, ease: 'easeOut', delay: 0.05 }}
           className="absolute z-20 text-[32px] md:text-[68px] font-extrabold uppercase -translate-x-[1.4rem] -translate-y-[1rem] md:-translate-x-29 md:-translate-y-9 select-none pointer-events-none whitespace-nowrap outline-text"
           aria-hidden="true"
         >
@@ -114,6 +114,11 @@ const BrandingPanel = forwardRef(function BrandingPanel({ image, stage }, ref) {
       <p className="text-white/70 text-sm md:text-base leading-relaxed px-3 typing-text show-cursor">
         {startedTyping ? displayedText : ''}
       </p>
+      <p className="mt-6 text-xs md:text-sm text-white italic tracking-wide uppercase">
+        🛠 Build. 📦 Package. 🚀 Deploy.
+      </p>
+      <p className="mt-6 text-xs md:text-sm text-white italic tracking-wide uppercase"> — That's how I roll.</p>
+
     </aside>
   );
 });

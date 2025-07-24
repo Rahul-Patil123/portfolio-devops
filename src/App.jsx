@@ -7,13 +7,13 @@ import myImage from './assets/my-image.png';
 import './styles/index.css';
 import SkyCanvas from './components/SkyCanvas';
 import { fetchFilteredRepos } from './utils/githubAPI';
-import SkillContentPanel from './components/SkillContentPanel'; // ✅ Import here
+import SkillContentPanel from './components/SkillContentPanel';
 
 export default function App() {
   const [projects, setProjects] = useState([]);
   const brandingRef = useRef();
   const [stage, setStage] = useState(0);
-  const [selectedSkill, setSelectedSkill] = useState(null); // ✅ Moved here
+  const [selectedSkill, setSelectedSkill] = useState(null);
 
   useEffect(() => {
     if (stage === 1) {
@@ -33,7 +33,7 @@ export default function App() {
 
   return (
     <div
-      className="min-h-screen text-white font-inter transition-all duration-700 relative"
+      className="text-white font-inter transition-all duration-700 relative h-screen overflow-y-auto md:overflow-hidden"
       style={{ backgroundColor: 'black' }}
     >
       <div className="absolute inset-0 bg-black opacity-70 z-0" />
@@ -47,24 +47,26 @@ export default function App() {
           stage > 0 ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
         }`}
       >
-        <div className="p-4 md:p-5 mx-auto pb-28">
-          <div className="flex flex-col md:flex-row min-h-[90vh] gap-6 md:gap-10">
-            <BrandingPanel ref={brandingRef} image={myImage} stage={stage} />
+        <div className="p-4 md:p-5 mx-auto pb-28 md:h-screen">
+          <div className="flex flex-col md:flex-row h-full overflow-hidden gap-6 md:gap-10">
+            <div className="md:h-full md:w-[30%]">
+              <BrandingPanel ref={brandingRef} image={myImage} stage={stage} />
+            </div>
 
-            {/* Projects and Skill Panel at stage 3 */}
             {stage >= 3 && (
-              <main className="flex-1 p-2 md:p-1 rounded-2xl transition-opacity duration-700 space-y-6">
-                <SkillContentPanel selectedSkill={selectedSkill} /> {/* ✅ Here */}
-                <section className="mb-12">
-                  {/* <ProjectsCarousel projects={projects} /> */}
-                </section>
+              <main className="flex-1 h-[65vh] md:h-full rounded-2xl flex flex-col space-y-6">
+                <div className="flex-1 overflow-y-auto ">
+                  <SkillContentPanel selectedSkill={selectedSkill} />
+                </div>
+                {/* <section className="mb-12">
+                  <ProjectsCarousel projects={projects} />
+                </section> */}
               </main>
             )}
           </div>
         </div>
       </div>
 
-      {/* Dock with setter passed as prop */}
       <div
         className={`fixed bottom-0 left-0 w-full z-40 transition-opacity duration-700 ${
           stage >= 3 ? 'opacity-100' : 'opacity-0'
