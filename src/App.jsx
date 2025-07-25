@@ -41,7 +41,6 @@ export default function App() {
       {stage === 0 && (
         <StarCanvas onImpact={() => setStage(1)} brandingRef={brandingRef} />
       )}
-
       <div
         className={`relative z-10 transition-all duration-700 ease-out ${
           stage > 0 ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
@@ -58,15 +57,14 @@ export default function App() {
                 <div className="flex-1 overflow-y-auto ">
                   <SkillContentPanel selectedSkill={selectedSkill} />
                 </div>
-                {/* <section className="mb-12">
+                <section className="mb-12">
                   <ProjectsCarousel projects={projects} />
-                </section> */}
+                </section>
               </main>
             )}
           </div>
         </div>
       </div>
-
       <div
         className={`fixed bottom-0 left-0 w-full z-40 transition-opacity duration-700 ${
           stage >= 3 ? 'opacity-100' : 'opacity-0'
