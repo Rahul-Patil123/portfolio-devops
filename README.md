@@ -195,4 +195,3 @@ npm run dev
 ---
 
 ## 📜 License
-Not availabe now
