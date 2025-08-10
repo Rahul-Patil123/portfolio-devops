@@ -14,7 +14,5 @@ RUN npm run build
 # Serve with a static server
 FROM nginx:alpine
 COPY --from=builder /app/dist /usr/share/nginx/html
-
-# Optional: override default nginx config
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
